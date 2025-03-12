@@ -12,6 +12,12 @@ builder.Services.AddMediatR(config =>
     config.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
 
+//Configure the connection to the postGres database.
+builder.Services.AddMarten(opts =>
+{
+    opts.Connection(builder.Configuration.GetConnectionString("Database")!);
+}).UseLightweightSessions();
+
 var app = builder.Build();
 
 // Configure to HTTP request pipeline
