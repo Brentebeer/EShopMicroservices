@@ -16,11 +16,12 @@
                 // send it using the mediator
                 var result = await sender.Send(command);
 
+                // Wil Map the result to CreateProductResponse
                 var response = result.Adapt<CreateProductResponse>();
 
                 return Results.Created($"/products/{response.Id}", response);
             })
-            .WithName("CreateProdcut")
+            .WithName("CreateProduct")
             .Produces<CreateProductResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .WithSummary("Create Product")
