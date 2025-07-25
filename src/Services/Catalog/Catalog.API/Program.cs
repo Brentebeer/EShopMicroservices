@@ -12,6 +12,8 @@ builder.Services.AddMediatR(config =>
     config.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
 
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
 //Configure the connection to the postGres database.
 builder.Services.AddMarten(opts =>
 {
