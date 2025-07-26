@@ -1,18 +1,25 @@
+using BuildingBlocks.Behaviors;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 
-//Carter is set up to scan the specified assembly (in this case, typeof(Program).Assembly) for classes that implement the ICarterModule interface.
-builder.Services.AddCarter(
-    new DependencyContextAssemblyCatalog(assemblies: typeof(Program).Assembly)
-);
 
+var assembly = typeof(Program).Assembly;
+
+//Underneath is pipelinebehavior
 builder.Services.AddMediatR(config =>
 {
-    config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    config.RegisterServicesFromAssembly(assembly);
+    config.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
-builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+builder.Services.AddValidatorsFromAssembly(assembly);
+
+//Carter is set up to scan the specified assembly (in this case, typeof(Program).Assembly) for classes that implement the ICarterModule interface.
+builder.Services.AddCarter(
+    new DependencyContextAssemblyCatalog(assemblies: assembly)
+);
 
 //Configure the connection to the postGres database.
 builder.Services.AddMarten(opts =>
